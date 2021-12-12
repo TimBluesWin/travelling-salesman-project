@@ -17,6 +17,8 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.venv/
+/backend/db.sqlite3
 
 npm-debug.log*
 yarn-debug.log*
