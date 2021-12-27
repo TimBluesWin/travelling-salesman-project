@@ -48,10 +48,8 @@ class SearchRouteAPI:
         # When we insert a city to the tour, we append that city to tours variable.
         tours = []
         tours.append(int(q))
-        print("Added city " + str(q))
         firstStepResult = self.cheapestInsertionFirstStepResults(pathCopy, (int(q)))
         tours.append(firstStepResult['index'])
-        print("Added city " + str(firstStepResult['index']))
 
         cityNumber = 3
         # If the number of nodes in tour < number of cities, keep looping.
@@ -87,8 +85,6 @@ class SearchRouteAPI:
                     # We start to compare the costs of adding the 
                     cityIndex = cityIndex + 1
                     currentAddedCost = pathCopy[currentPreviousCity][currentAddedCity] + pathCopy[currentAddedCity][currentNextCity] - pathCopy[currentPreviousCity][currentNextCity]
-                    print("Cost adding city " + str(currentAddedCity) + " between city " + str(currentPreviousCity) + 
-                    " and city " + str(currentNextCity) + " is " + str(currentAddedCost))
                     if currentAddedCost < bestAddedCost:
                         bestAddedCost = currentAddedCost
                         bestPreviousCity = currentPreviousCity
