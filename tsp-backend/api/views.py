@@ -5,7 +5,9 @@ import abc
 from .services.nNeighbour import nNeighbour
 from .services.rInsertion import rInsertion
 from .services.getPoints import getPoints
-
+from .services.googleOr import googleOr
+from .services.cheapestInsertion import cheapestInsertion
+from .services.christofidesAlgorithm import christofidesAlgorithm
 
 class ThroughAPIBaseView(views.APIView):
     response_viewset = None
@@ -39,4 +41,22 @@ class RandomView(ThroughAPIBaseView):
     def get(self, request):
         search = request.GET.get('q')
         words = rInsertion(search)
+        return JsonResponse(words, safe=False)
+
+class GoogleOrView(ThroughAPIBaseView):
+    def get(self, request):
+        search = request.GET.get('q')
+        words = googleOr(search)
+        return JsonResponse(words, safe=False)
+
+class CheapestInsertionView(ThroughAPIBaseView):
+    def get(self, request):
+        search = request.GET.get('q')
+        words = cheapestInsertion(search)
+        return JsonResponse(words, safe=False)
+
+class ChristofidesAlgorithmView(ThroughAPIBaseView):
+    def get(self, request):
+        search = request.GET.get('q')
+        words = christofidesAlgorithm(search)
         return JsonResponse(words, safe=False)
