@@ -26,6 +26,9 @@ class SearchRouteAPI:
         result = christofides.compute(newMatrix)
         initialTour = result['Christofides_Solution']
 
+        # Remove the looping end.
+        initialTour.pop()
+
         properTour = self.getProperTour(initialIndex, initialTour)
 
         apiResult = self.getResults(matrix, properTour)
@@ -56,9 +59,9 @@ class SearchRouteAPI:
             toursIndex = toursIndex + 1
         return resultsList
 
-    def getProperTour(self, initialIndex, result):
+    def getProperTour(self, initialCity, result):
         tour = []
-        currentIndex = initialIndex
+        currentIndex = result.index(initialCity)
         while len(tour) < len(result):
             city = int(result[currentIndex])
             tour.append(city)
@@ -66,6 +69,7 @@ class SearchRouteAPI:
                 currentIndex = 0
             else:
                 currentIndex = currentIndex + 1
+        tour.append(initialCity)
         return tour
 
      # Because for the library that I use, there's a restriction of the distance matrix format.
