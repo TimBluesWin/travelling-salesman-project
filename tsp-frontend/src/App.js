@@ -10,6 +10,9 @@ class App extends Component {
     this.state = {
       pointList: [],
       randomList: [],
+      orList: [],
+      cheapList: [],
+      christList: [],
     };
   }
 
@@ -40,22 +43,67 @@ class App extends Component {
   }
 
   getRandom() {
-      var url = "http://127.0.0.1:8000/api/rinsertion/?q=" + this.selectedPoint;
-      fetch(url)
-        .then(response => {
-          return response.json();
-        })
-        .then(d => {
-          this.setState({ randomList: d });
-          console.log("state", this.state.randomList)
-        })
-        .catch(error => console.log(error))
-    
+    var url = "http://127.0.0.1:8000/api/rinsertion/?q=" + this.selectedPoint;
+    fetch(url)
+      .then(response => {
+        return response.json();
+      })
+      .then(d => {
+        this.setState({ randomList: d });
+        console.log("state", this.state.randomList)
+      })
+      .catch(error => console.log(error))
+
+  }
+
+  getOr() {
+    var url = "http://127.0.0.1:8000/api/googleor/?q=" + this.selectedPoint;
+    fetch(url)
+      .then(response => {
+        return response.json();
+      })
+      .then(d => {
+        this.setState({ orList: d });
+        console.log("state", this.state.orList)
+      })
+      .catch(error => console.log(error))
+
+  }
+
+  getCheapest() {
+    var url = "http://127.0.0.1:8000/api/cheapestinsertion/?q=" + this.selectedPoint;
+    fetch(url)
+      .then(response => {
+        return response.json();
+      })
+      .then(d => {
+        this.setState({ cheapList: d });
+        console.log("state", this.state.cheapList)
+      })
+      .catch(error => console.log(error))
+
+  }
+
+  getChristophides() {
+    var url = "http://127.0.0.1:8000/api/christofidesalgorithm/?q=" + this.selectedPoint;
+    fetch(url)
+      .then(response => {
+        return response.json();
+      })
+      .then(d => {
+        this.setState({ christList: d });
+        console.log("state", this.state.christList)
+      })
+      .catch(error => console.log(error))
+
   }
 
   removeElements() {
     if (this.performed) {
-      document.getElementById("cardRandom").style.display = "block";
+      document.getElementById("cardRandom1").style.display = "block";
+      document.getElementById("cardRandom2").style.display = "block";
+      document.getElementById("cardRandom3").style.display = "block";
+      document.getElementById("cardRandom4").style.display = "block";
       document.getElementById("navTitle").innerHTML = "Nearest neighbour:";
       document.getElementById("infoText").innerHTML = "Check every different solution!";
       document.getElementById("infoText").style.textAlign = "center";
@@ -78,7 +126,10 @@ class App extends Component {
       if (result.isConfirmed) {
         this.performed = true
         this.getResults();
-        this.getRandom()
+        this.getRandom();
+        this.getOr();
+        this.getCheapest();
+        this.getChristophides();
       }
     })
   };
@@ -97,7 +148,55 @@ class App extends Component {
           {randomList.distance}
         </span>
       </li>
-    )), this.removeElements(),);
+    )), this.removeElements());
+  };
+  renderOr = () => {
+
+    return this.state.orList.map(((orList, index) => (
+      <li
+        key={`${orList.id}${index}`}
+        className="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <span>
+          {orList.name}
+        </span>
+        <span>
+          {orList.distance}
+        </span>
+      </li>
+    )), this.removeElements());
+  };
+  renderCheapest = () => {
+
+    return this.state.cheapList.map(((cheapList, index) => (
+      <li
+        key={`${cheapList.id}${index}`}
+        className="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <span>
+          {cheapList.name}
+        </span>
+        <span>
+          {cheapList.distance}
+        </span>
+      </li>
+    )), this.removeElements());
+  };
+  renderChristophides = () => {
+
+    return this.state.christList.map(((christList, index) => (
+      <li
+        key={`${christList.id}${index}`}
+        className="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <span>
+          {christList.name}
+        </span>
+        <span>
+          {christList.distance}
+        </span>
+      </li>
+    )), this.removeElements());
   };
 
   renderItems = () => {
@@ -181,7 +280,7 @@ class App extends Component {
               </ul>
             </div>
             <br></br>
-            <div className="card p-3" id="cardRandom" style={{display: 'none'}}>
+            <div className="card p-3" id="cardRandom1" style={{ display: 'none' }}>
               <div className="nav nav-tabs">
                 <span
                   className="nav-link active nav-link"
@@ -194,6 +293,49 @@ class App extends Component {
                 {this.renderRandom()}
               </ul>
             </div>
+            <br></br>
+            <div className="card p-3" id="cardRandom2" style={{ display: 'none' }}>
+              <div className="nav nav-tabs">
+                <span
+                  className="nav-link active nav-link"
+                  id="navTitle"
+                >
+                  Google OR:
+                </span>
+              </div>
+              <ul className="list-group list-group-flush border-top-0">
+                {this.renderOr()}
+              </ul>
+            </div>
+            <br></br>
+            <div className="card p-3" id="cardRandom3" style={{ display: 'none' }}>
+              <div className="nav nav-tabs">
+                <span
+                  className="nav-link active nav-link"
+                  id="navTitle"
+                >
+                  Cheapest insertion:
+                </span>
+              </div>
+              <ul className="list-group list-group-flush border-top-0">
+                {this.renderCheapest()}
+              </ul>
+            </div>
+            <br></br>
+            <div className="card p-3" id="cardRandom4" style={{ display: 'none' }}>
+              <div className="nav nav-tabs">
+                <span
+                  className="nav-link active nav-link"
+                  id="navTitle"
+                >
+                  Christophides algorithm:
+                </span>
+              </div>
+              <ul className="list-group list-group-flush border-top-0">
+                {this.renderChristophides()}
+              </ul>
+            </div>
+            <br></br>
           </div>
         </div>
       </main>
