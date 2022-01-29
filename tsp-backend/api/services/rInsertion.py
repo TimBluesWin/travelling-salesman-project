@@ -44,9 +44,21 @@ class SearchRouteAPI:
             point = {"id": item, "name": pointName.name, "distance": dist}
             resultList.append(point)
             count = count + 1
+        
+        # Add the results as well
+        returnResults = {}
+        returnResults['tour'] = resultList
+        returnResults['distance'] = self.getDistance(resultList)
+        return returnResults
             
         return resultList
 
+    def getDistance(self, resultsList):
+        totalDistance = 0
+        for place in resultsList:
+            currentDistance = place['distance']
+            totalDistance = totalDistance + currentDistance
+        return totalDistance
 
 def rInsertion(q):
     api = SearchRouteAPI()

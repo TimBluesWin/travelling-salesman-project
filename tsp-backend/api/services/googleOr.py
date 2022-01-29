@@ -45,9 +45,23 @@ class SearchRouteAPI:
                 "distance": routing.GetArcCostForVehicle(previous_index, index, 0),
             }
             resultList.append(point)
-        return resultList
 
-    def googleOrApi(self, q):
+                # Add the results as well
+        returnResults = {}
+        returnResults['tour'] = resultList
+        returnResults['distance'] = self.getDistance(resultList)
+        return returnResults
+    
+    def getDistance(self, resultsList):
+        totalDistance = 0
+        for place in resultsList:
+            currentDistance = place['distance']
+            totalDistance = totalDistance + currentDistance
+        return totalDistance
+
+    # Return results from Google API. If optimize = 0, no optimization is performed.
+    # If optimization = 1, use Guided Local Search Optimization.
+    def googleOrApi(self, q, optimize=0):
         """Entry point of the program."""
         # Instantiate the data problem.
         data = self.create_data_model(q)
@@ -93,6 +107,11 @@ class SearchRouteAPI:
         search_parameters.first_solution_strategy = (
             routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC)
 
+        if int(optimize)==1:
+            search_parameters.local_search_metaheuristic = (
+            routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH)
+            search_parameters.time_limit.seconds = 30
+
         # Solve the problem.
         solution = routing.SolveWithParameters(search_parameters)
 
@@ -105,6 +124,6 @@ class SearchRouteAPI:
         return results
 
 
-def googleOr(q):
+def googleOr(q, optimize=0):
     api = SearchRouteAPI()
-    return api.googleOrApi(q)
+    return api.googleOrApi(q, optimize)

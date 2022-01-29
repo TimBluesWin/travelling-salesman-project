@@ -102,6 +102,7 @@ class SearchRouteAPI:
         # Then we want to return the results from the API.
 
     def generateResults(self, matrix, tours):
+        returnResults = {}
         toursIndex = 0
         resultsList = []
         # raise Exception(tours)
@@ -123,7 +124,16 @@ class SearchRouteAPI:
                 }
             resultsList.append(point)
             toursIndex = toursIndex + 1
-        return resultsList
+        returnResults['tour'] = resultsList
+        returnResults['distance'] = self.getDistance(resultsList)
+        return returnResults
+
+    def getDistance(self, resultsList):
+        totalDistance = 0
+        for place in resultsList:
+            currentDistance = place['distance']
+            totalDistance = totalDistance + currentDistance
+        return totalDistance
 
 
 def cheapestInsertion(q):

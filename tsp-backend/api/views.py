@@ -46,7 +46,8 @@ class RandomView(ThroughAPIBaseView):
 class GoogleOrView(ThroughAPIBaseView):
     def get(self, request):
         search = request.GET.get('q')
-        words = googleOr(search)
+        optimize = request.GET.get('optimize')
+        words = googleOr(search, optimize)
         return JsonResponse(words, safe=False)
 
 class CheapestInsertionView(ThroughAPIBaseView):

@@ -45,7 +45,18 @@ class SearchRouteAPI:
         pointName = Point.objects.get(id=q)
         point = {"id": int(q), "name": pointName.name, "distance": a}
         resultList.append(point)
-        return resultList
+        # Add the results as well
+        returnResults = {}
+        returnResults['tour'] = resultList
+        returnResults['distance'] = self.getDistance(resultList)
+        return returnResults
+    
+    def getDistance(self, resultsList):
+        totalDistance = 0
+        for place in resultsList:
+            currentDistance = place['distance']
+            totalDistance = totalDistance + currentDistance
+        return totalDistance
 
 
 def nNeighbour(q):
