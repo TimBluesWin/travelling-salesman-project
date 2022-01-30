@@ -11,8 +11,15 @@ class App extends Component {
       pointList: [],
       randomList: [],
       orList: [],
+      orListOpt: [],
       cheapList: [],
       christList: [],
+      pointTotal: 0,
+      randomTotal: 0,
+      orTotal: 0,
+      orOptTotal: 0,
+      cheapTotal: 0,
+      christTotal: 0,
     };
   }
 
@@ -36,8 +43,8 @@ class App extends Component {
         return response.json();
       })
       .then(d => {
-        this.setState({ pointList: d });
-        console.log("state", this.state.pointList)
+        this.setState({ pointList: d["tour"], pointTotal: d["distance"] });
+        console.log("state", this.state.pointList["tour"])
       })
       .catch(error => console.log(error))
   }
@@ -49,22 +56,36 @@ class App extends Component {
         return response.json();
       })
       .then(d => {
-        this.setState({ randomList: d });
-        console.log("state", this.state.randomList)
+        this.setState({ randomList: d["tour"], randomTotal: d["distance"] });
+        console.log("state", this.state.randomList["tour"])
       })
       .catch(error => console.log(error))
 
   }
 
   getOr() {
-    var url = "http://127.0.0.1:8000/api/googleor/?q=" + this.selectedPoint;
+    var url = "http://127.0.0.1:8000/api/googleor/?q=" + this.selectedPoint + "&optimize=0";
     fetch(url)
       .then(response => {
         return response.json();
       })
       .then(d => {
-        this.setState({ orList: d });
-        console.log("state", this.state.orList)
+        this.setState({ orList: d["tour"], orTotal: d["distance"] });
+        console.log("state", this.state.orList["tour"])
+      })
+      .catch(error => console.log(error))
+
+  }
+
+  getOrOpt() {
+    var url = "http://127.0.0.1:8000/api/googleor/?q=" + this.selectedPoint + "&optimize=1";
+    fetch(url)
+      .then(response => {
+        return response.json();
+      })
+      .then(d => {
+        this.setState({ orListOpt: d["tour"], orOptTotal: d["distance"] });
+        console.log("state", this.state.orListOpt["tour"])
       })
       .catch(error => console.log(error))
 
@@ -77,8 +98,8 @@ class App extends Component {
         return response.json();
       })
       .then(d => {
-        this.setState({ cheapList: d });
-        console.log("state", this.state.cheapList)
+        this.setState({ cheapList: d["tour"], cheapTotal: d["distance"] });
+        console.log("state", this.state.cheapList["tour"])
       })
       .catch(error => console.log(error))
 
@@ -91,8 +112,8 @@ class App extends Component {
         return response.json();
       })
       .then(d => {
-        this.setState({ christList: d });
-        console.log("state", this.state.christList)
+        this.setState({ christList: d["tour"], christTotal: d["distance"] });
+        console.log("state", this.state.christList["tour"])
       })
       .catch(error => console.log(error))
 
@@ -104,6 +125,7 @@ class App extends Component {
       document.getElementById("cardRandom2").style.display = "block";
       document.getElementById("cardRandom3").style.display = "block";
       document.getElementById("cardRandom4").style.display = "block";
+      document.getElementById("cardRandom5").style.display = "block";
       document.getElementById("navTitle").innerHTML = "Nearest neighbour:";
       document.getElementById("infoText").innerHTML = "Check every different solution!";
       document.getElementById("infoText").style.textAlign = "center";
@@ -125,6 +147,7 @@ class App extends Component {
     }).then((result) => {
       if (result.isConfirmed) {
         this.performed = true
+        this.getOrOpt();
         this.getResults();
         this.getRandom();
         this.getOr();
@@ -162,6 +185,22 @@ class App extends Component {
         </span>
         <span>
           {orList.distance}
+        </span>
+      </li>
+    )), this.removeElements());
+  };
+  renderOrOpt = () => {
+
+    return this.state.orListOpt.map(((orListOpt, index) => (
+      <li
+        key={`${orListOpt.id}${index}`}
+        className="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <span>
+          {orListOpt.name}
+        </span>
+        <span>
+          {orListOpt.distance}
         </span>
       </li>
     )), this.removeElements());
@@ -277,6 +316,7 @@ class App extends Component {
               </div>
               <ul className="list-group list-group-flush border-top-0">
                 {this.renderItems()}
+                <p><b>Total: {this.state.pointTotal} Km</b></p>
               </ul>
             </div>
             <br></br>
@@ -291,6 +331,7 @@ class App extends Component {
               </div>
               <ul className="list-group list-group-flush border-top-0">
                 {this.renderRandom()}
+                <p><b>Total: {this.state.randomTotal} Km</b></p>
               </ul>
             </div>
             <br></br>
@@ -300,11 +341,27 @@ class App extends Component {
                   className="nav-link active nav-link"
                   id="navTitle"
                 >
-                  Google OR:
+                  Google OR (Not optimized):
                 </span>
               </div>
               <ul className="list-group list-group-flush border-top-0">
                 {this.renderOr()}
+                <p><b>Total: {this.state.orTotal} Km</b></p>
+              </ul>
+            </div>
+            <br></br>
+            <div className="card p-3" id="cardRandom5" style={{ display: 'none' }}>
+              <div className="nav nav-tabs">
+                <span
+                  className="nav-link active nav-link"
+                  id="navTitle"
+                >
+                  Google OR (Optimized):
+                </span>
+              </div>
+              <ul className="list-group list-group-flush border-top-0">
+                {this.renderOrOpt()}
+                <p><b>Total: {this.state.orOptTotal} Km</b></p>
               </ul>
             </div>
             <br></br>
@@ -319,6 +376,7 @@ class App extends Component {
               </div>
               <ul className="list-group list-group-flush border-top-0">
                 {this.renderCheapest()}
+                <p><b>Total: {this.state.cheapTotal} Km</b></p>
               </ul>
             </div>
             <br></br>
@@ -333,6 +391,7 @@ class App extends Component {
               </div>
               <ul className="list-group list-group-flush border-top-0">
                 {this.renderChristophides()}
+                <p><b>Total: {this.state.christTotal} Km</b></p>
               </ul>
             </div>
             <br></br>
