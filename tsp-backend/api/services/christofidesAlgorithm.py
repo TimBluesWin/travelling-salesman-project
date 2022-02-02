@@ -41,8 +41,9 @@ class SearchRouteAPI:
         resultsList = []
         # raise Exception(tours)
         while toursIndex < len(tours):
-            currentCity = tours[toursIndex]
+            
             if toursIndex == 0:
+                currentCity = tours[toursIndex]
                 pointName = Point.objects.get(id=currentCity + 1)
                 point = {
                     "id": currentCity + 1,
@@ -50,11 +51,13 @@ class SearchRouteAPI:
                     "distance": 0
                 }
             else:
+                currentCity = tours[toursIndex]
+                previousCity = tours[toursIndex - 1]
                 pointName = Point.objects.get(id=currentCity + 1)
                 point = {
                     "id": currentCity + 1,
                     "name": pointName.name,
-                    "distance": matrix[currentCity - 1][currentCity]
+                    "distance": matrix[previousCity][currentCity]
                 }
             resultsList.append(point)
             toursIndex = toursIndex + 1
