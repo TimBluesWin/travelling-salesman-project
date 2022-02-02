@@ -316,7 +316,7 @@ class App extends Component {
               </div>
               <ul className="list-group list-group-flush border-top-0">
                 {this.renderItems()}
-                <p><b>Total: {this.state.pointTotal} Km</b></p>
+                <p><b>Total: {this.state.pointTotal} m</b></p>
               </ul>
             </div>
             <br></br>
@@ -331,7 +331,7 @@ class App extends Component {
               </div>
               <ul className="list-group list-group-flush border-top-0">
                 {this.renderRandom()}
-                <p><b>Total: {this.state.randomTotal} Km</b></p>
+                <p><b>Total: {this.state.randomTotal} m</b></p>
               </ul>
             </div>
             <br></br>
@@ -346,7 +346,7 @@ class App extends Component {
               </div>
               <ul className="list-group list-group-flush border-top-0">
                 {this.renderOr()}
-                <p><b>Total: {this.state.orTotal} Km</b></p>
+                <p><b>Total: {this.state.orTotal} m</b></p>
               </ul>
             </div>
             <br></br>
@@ -361,7 +361,7 @@ class App extends Component {
               </div>
               <ul className="list-group list-group-flush border-top-0">
                 {this.renderOrOpt()}
-                <p><b>Total: {this.state.orOptTotal} Km</b></p>
+                <p><b>Total: {this.state.orOptTotal} m</b></p>
               </ul>
             </div>
             <br></br>
@@ -376,7 +376,7 @@ class App extends Component {
               </div>
               <ul className="list-group list-group-flush border-top-0">
                 {this.renderCheapest()}
-                <p><b>Total: {this.state.cheapTotal} Km</b></p>
+                <p><b>Total: {this.state.cheapTotal} m</b></p>
               </ul>
             </div>
             <br></br>
@@ -391,7 +391,7 @@ class App extends Component {
               </div>
               <ul className="list-group list-group-flush border-top-0">
                 {this.renderChristophides()}
-                <p><b>Total: {this.state.christTotal} Km</b></p>
+                <p><b>Total: {this.state.christTotal} m</b></p>
               </ul>
             </div>
             <br></br>
