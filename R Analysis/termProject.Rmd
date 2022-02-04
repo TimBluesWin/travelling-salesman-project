@@ -1,0 +1,28 @@
+---
+title: "Analysis"
+author: "Alberto Gómez"
+date: "2/2/2022"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+df <- read.csv("results.csv", sep=",")
+```
+
+```{r analysis}
+boxplot(df$total ~ df$method,main = "Average distance by method",
+xlab = "Method",
+ylab = "Average distance",
+col = "Light blue",
+border = "purple",)
+cheapest <- subset(df, method == "CheapestIns")
+summary(cheapest$total)
+NNeighbour <- subset(df, method == "NNeighbour")
+summary(NNeighbour$total)
+RandomIns <- subset(df, method == "RandomIns")
+summary(RandomIns$total)
+Christofides <- subset(df, method == "Christofides")
+summary(Christofides$total)
+GoogleOR <- subset(df, method == "GoogleOR")
+summary(GoogleOR$total)
+```
