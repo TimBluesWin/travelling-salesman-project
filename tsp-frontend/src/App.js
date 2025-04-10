@@ -10,14 +10,10 @@ class App extends Component {
     this.state = {
       pointList: [],
       randomList: [],
-      orList: [],
-      orListOpt: [],
       cheapList: [],
       christList: [],
       pointTotal: 0,
       randomTotal: 0,
-      orTotal: 0,
-      orOptTotal: 0,
       cheapTotal: 0,
       christTotal: 0,
     };
@@ -63,34 +59,6 @@ class App extends Component {
 
   }
 
-  getOr() {
-    var url = "http://127.0.0.1:8000/api/googleor/?q=" + this.selectedPoint + "&optimize=0";
-    fetch(url)
-      .then(response => {
-        return response.json();
-      })
-      .then(d => {
-        this.setState({ orList: d["tour"], orTotal: d["distance"] });
-        console.log("state", this.state.orList["tour"])
-      })
-      .catch(error => console.log(error))
-
-  }
-
-  getOrOpt() {
-    var url = "http://127.0.0.1:8000/api/googleor/?q=" + this.selectedPoint + "&optimize=1";
-    fetch(url)
-      .then(response => {
-        return response.json();
-      })
-      .then(d => {
-        this.setState({ orListOpt: d["tour"], orOptTotal: d["distance"] });
-        console.log("state", this.state.orListOpt["tour"])
-      })
-      .catch(error => console.log(error))
-
-  }
-
   getCheapest() {
     var url = "http://127.0.0.1:8000/api/cheapestinsertion/?q=" + this.selectedPoint;
     fetch(url)
@@ -122,10 +90,8 @@ class App extends Component {
   removeElements() {
     if (this.performed) {
       document.getElementById("cardRandom1").style.display = "block";
-      document.getElementById("cardRandom2").style.display = "block";
       document.getElementById("cardRandom3").style.display = "block";
       document.getElementById("cardRandom4").style.display = "block";
-      document.getElementById("cardRandom5").style.display = "block";
       document.getElementById("navTitle").innerHTML = "Nearest neighbour:";
       document.getElementById("infoText").innerHTML = "Check every different solution!";
       document.getElementById("infoText").style.textAlign = "center";
@@ -147,10 +113,8 @@ class App extends Component {
     }).then((result) => {
       if (result.isConfirmed) {
         this.performed = true
-        this.getOrOpt();
         this.getResults();
         this.getRandom();
-        this.getOr();
         this.getCheapest();
         this.getChristophides();
       }
@@ -169,38 +133,6 @@ class App extends Component {
         </span>
         <span>
           {randomList.distance}
-        </span>
-      </li>
-    )), this.removeElements());
-  };
-  renderOr = () => {
-
-    return this.state.orList.map(((orList, index) => (
-      <li
-        key={`${orList.id}${index}`}
-        className="list-group-item d-flex justify-content-between align-items-center"
-      >
-        <span>
-          {orList.name}
-        </span>
-        <span>
-          {orList.distance}
-        </span>
-      </li>
-    )), this.removeElements());
-  };
-  renderOrOpt = () => {
-
-    return this.state.orListOpt.map(((orListOpt, index) => (
-      <li
-        key={`${orListOpt.id}${index}`}
-        className="list-group-item d-flex justify-content-between align-items-center"
-      >
-        <span>
-          {orListOpt.name}
-        </span>
-        <span>
-          {orListOpt.distance}
         </span>
       </li>
     )), this.removeElements());
@@ -332,36 +264,6 @@ class App extends Component {
               <ul className="list-group list-group-flush border-top-0">
                 {this.renderRandom()}
                 <p><b>Total: {this.state.randomTotal} m</b></p>
-              </ul>
-            </div>
-            <br></br>
-            <div className="card p-3" id="cardRandom2" style={{ display: 'none' }}>
-              <div className="nav nav-tabs">
-                <span
-                  className="nav-link active nav-link"
-                  id="navTitle"
-                >
-                  Google OR (Not optimized):
-                </span>
-              </div>
-              <ul className="list-group list-group-flush border-top-0">
-                {this.renderOr()}
-                <p><b>Total: {this.state.orTotal} m</b></p>
-              </ul>
-            </div>
-            <br></br>
-            <div className="card p-3" id="cardRandom5" style={{ display: 'none' }}>
-              <div className="nav nav-tabs">
-                <span
-                  className="nav-link active nav-link"
-                  id="navTitle"
-                >
-                  Google OR (Optimized):
-                </span>
-              </div>
-              <ul className="list-group list-group-flush border-top-0">
-                {this.renderOrOpt()}
-                <p><b>Total: {this.state.orOptTotal} m</b></p>
               </ul>
             </div>
             <br></br>
