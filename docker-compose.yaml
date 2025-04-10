@@ -1,0 +1,15 @@
+services:
+  api:
+    build: ./tsp-backend
+    ports:
+      - "8000:8000"
+    volumes:    
+      - ./tsp-backend:/tsp-backend
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+
+  web:
+    build: ./tsp-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./tsp-frontend:/tsp-frontend
